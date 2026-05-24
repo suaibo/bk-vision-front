@@ -1,7 +1,18 @@
 <template>
   <div class="dashboard-page">
+    <div class="dashboard-toolbar">
+      <div>
+        <div class="dashboard-title">BKVision 数据仪表盘</div>
+        <div class="dashboard-subtitle">API 调用统计与用户备份画像</div>
+      </div>
+      <div class="dashboard-actions">
+        <bk-button icon="refresh" @click="refreshDashboard">刷新</bk-button>
+        <bk-button icon="share" @click="openDashboard">新窗口打开</bk-button>
+      </div>
+    </div>
     <iframe
       v-if="dashboardUrl"
+      :key="frameKey"
       class="dashboard-frame"
       :src="dashboardUrl"
       title="BKVision Dashboard"
@@ -18,12 +29,27 @@
 </template>
 
 <script>
+const DEFAULT_DASHBOARD_URL = "http://apps.ce.bktencent.com/bk-vision/embed/?uid=3ZJQxqGBhnBw3JbyZEyHWK&bk_app_id=&bk_app_list=['bk-vision-10086']&name=&show_copyright=True&watermark=True&time_readonly=False&show_time=True&show_refresh=True&start_time=now/d&end_time=now/d&preview=False&hide_toolbox=False&hide_filter=False&panels=&refresh=False";
+
 export default {
   name: 'DashBoard',
+  data() {
+    return {
+      frameKey: 1,
+    };
+  },
   computed: {
     dashboardUrl() {
-      const url = window.BK_VISION_DASHBOARD_URL || process.env.BK_VISION_DASHBOARD_URL || '';
+      const url = window.BK_VISION_DASHBOARD_URL || process.env.BK_VISION_DASHBOARD_URL || DEFAULT_DASHBOARD_URL;
       return url.trim().replace(/^http:\/\//, 'https://');
+    },
+  },
+  methods: {
+    refreshDashboard() {
+      this.frameKey += 1;
+    },
+    openDashboard() {
+      window.open(this.dashboardUrl, '_blank');
     },
   },
 };
@@ -33,12 +59,40 @@ export default {
 .dashboard-page {
   height: calc(100vh - 150px);
   min-height: 560px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  margin-bottom: 12px;
+}
+
+.dashboard-title {
+  color: #313238;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dashboard-subtitle {
+  margin-top: 4px;
+  color: #979ba5;
+  font-size: 12px;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .dashboard-frame {
   width: 100%;
-  height: 100%;
-  border: 0;
+  flex: 1;
+  min-height: 0;
+  border: 1px solid #dcdee5;
 }
 
 .dashboard-empty {
