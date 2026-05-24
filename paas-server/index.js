@@ -73,6 +73,7 @@ const GLOBAL_VAR = {
   BKPAAS_APP_ID: process.env.BKPAAS_APP_ID || '',
   BKPAAS_APP_SECRET: process.env.BKPAAS_APP_SECRET || '',
   BK_LOGIN_URL: process.env.BK_LOGIN_URL || '',
+  BK_VISION_DASHBOARD_URL: process.env.BK_VISION_DASHBOARD_URL || '',
 };
 
 

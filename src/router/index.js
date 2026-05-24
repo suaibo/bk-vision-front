@@ -15,6 +15,7 @@ const Example1 = () => import(/* webpackChunkName: 'example1' */'@/views/example
 const Example2 = () => import(/* webpackChunkName: 'example2' */'@/views/example2');
 const Example3 = () => import(/* webpackChunkName: 'example3' */'@/views/example3');
 const Example4 = () => import(/* webpackChunkName: 'example4' */'@/views/example4');
+const DashBoard = () => import(/* webpackChunkName: 'dashboard' */'@/views/DashBoard');
 const NotFound = () => import(/* webpackChunkName: 'none' */'@/views/404');
 
 Vue.use(VueRouter);
@@ -49,6 +50,14 @@ const routes = [
         component: Example4,
         meta: {
           matchRoute: '备份记录',
+        },
+      },
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: DashBoard,
+        meta: {
+          matchRoute: '数据仪表盘',
         },
       },
       {

@@ -101,6 +101,11 @@ export default {
             url: 'example4',
           },
           {
+            name: '数据仪表盘',
+            icon: 'icon-data2',
+            url: 'dashboard',
+          },
+          {
             name: '登录信息',
             icon: 'icon-tree-group-shape',
             url: 'example2',
