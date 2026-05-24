@@ -18,7 +18,12 @@ const mockTable = require('./api/table');
 const app = new Express();
 
 const PORT = process.env.PORT || 5000;
-const backendTarget = process.env.BK_BACKEND_API_PREFIX || process.env.BK_BACKEND_URL || '';
+const DEFAULT_BACKEND_API_PREFIX = 'https://apps1.ce.bktencent.com/stag--bk-vision-10086/';
+const getBackendTarget = () => (
+  process.env.BK_BACKEND_API_PREFIX
+  || process.env.BK_BACKEND_URL
+  || DEFAULT_BACKEND_API_PREFIX
+);
 const backendApiPaths = [
   '/biz-list',
   '/set-list',
@@ -38,6 +43,7 @@ app.use(user);
 
 backendApiPaths.forEach((apiPath) => {
   app.all(apiPath, (req, res) => {
+    const backendTarget = getBackendTarget();
     if (!backendTarget) {
       res.status(502).json({
         result: false,
