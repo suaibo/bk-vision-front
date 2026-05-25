@@ -8,6 +8,7 @@
             style="width: 250px;"
             ext-cls="select-custom"
             ext-popover-cls="select-popover-custom"
+            :clearable="false"
             searchable
             @change="handleBizChange">
             <bk-option
@@ -24,6 +25,7 @@
             style="width: 250px;"
             ext-cls="select-custom"
             ext-popover-cls="select-popover-custom"
+            :clearable="false"
             searchable
             @change="handleSetChange">
             <bk-option
@@ -40,6 +42,7 @@
             style="width: 250px;"
             ext-cls="select-custom"
             ext-popover-cls="select-popover-custom"
+            :clearable="false"
             searchable
             @change="handleModuleChange">
             <bk-option
@@ -136,16 +139,24 @@ export default {
       this.biz_id = newValue;
       this.set_id = null;
       this.module_id = null;
+      this.set_list = [];
       this.module_list = [];
+      if (!newValue) {
+        return;
+      }
       const setRes = await this.$store.dispatch('example/getSetData', { bk_biz_id: newValue }, { fromCache: true });
       this.set_list = ((setRes.data || {}).info || []);
     },
     async handleSetChange(newValue) {
       this.set_id = newValue;
       this.module_id = null;
+      this.module_list = [];
+      if (!this.biz_id || !newValue) {
+        return;
+      }
       const moduleRes = await this.$store.dispatch('example/getModuleData', {
         bk_biz_id: this.biz_id,
-        bk_set_id: this.set_id,
+        bk_set_id: newValue,
       }, { fromCache: true });
       this.module_list = ((moduleRes.data || {}).info || []);
     },
