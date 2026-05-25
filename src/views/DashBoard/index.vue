@@ -29,7 +29,7 @@
 </template>
 
 <script>
-const DEFAULT_DASHBOARD_URL = "https://apps.ce.bktencent.com/bk-vision/embed/?uid=3ZJQxqGBhnBw3JbyZEyHWK&bk_app_id=&bk_app_list=['bk-vision-10086']&name=&show_copyright=True&watermark=True&time_readonly=False&show_time=True&show_refresh=True&start_time=now/d&end_time=now/d&preview=False&hide_toolbox=False&hide_filter=False&panels=&refresh=False";
+const DEFAULT_DASHBOARD_URL = "http://apps.ce.bktencent.com/bk-vision/embed/?uid=3ZJQxqGBhnBw3JbyZEyHWK&bk_app_id=&bk_app_list=['bk-vision-10086']&name=&show_copyright=True&watermark=True&time_readonly=False&show_time=True&show_refresh=True&start_time=now/d&end_time=now/d&preview=False&hide_toolbox=False&hide_filter=False&panels=&refresh=False";
 
 const normalizeDashboardUrl = (value) => {
   if (!value || typeof value !== 'string') {
@@ -39,7 +39,7 @@ const normalizeDashboardUrl = (value) => {
   if (!/^https?:\/\//.test(url)) {
     return '';
   }
-  return url.replace(/^http:\/\//, 'https://');
+  return url;
 };
 
 export default {
