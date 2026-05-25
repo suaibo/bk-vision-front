@@ -29,15 +29,22 @@
 </template>
 
 <script>
-const DEFAULT_DASHBOARD_URL = "http://apps.ce.bktencent.com/bk-vision/embed/?uid=3ZJQxqGBhnBw3JbyZEyHWK&bk_app_id=&bk_app_list=['bk-vision-10086']&name=&show_copyright=True&watermark=True&time_readonly=False&show_time=True&show_refresh=True&start_time=now/d&end_time=now/d&preview=False&hide_toolbox=False&hide_filter=False&panels=&refresh=False";
+const EMBED_APP_ID = 'bk-vision-10086';
+const DEFAULT_DASHBOARD_URL = "https://apps.ce.bktencent.com/bk-vision/embed/?uid=3ZJQxqGBhnBw3JbyZEyHWK&bk_app_id=bk-vision-10086&bk_app_list=['bk-vision-10086']&name=&show_copyright=True&watermark=True&time_readonly=False&show_time=True&show_refresh=True&start_time=now/d&end_time=now/d&preview=False&hide_toolbox=False&hide_filter=False&panels=&refresh=False";
 
 const normalizeDashboardUrl = (value) => {
   if (!value || typeof value !== 'string') {
     return '';
   }
-  const url = value.trim();
+  const srcMatch = value.match(/\ssrc=["']([^"']+)["']/);
+  let url = (srcMatch ? srcMatch[1] : value).trim();
   if (!/^https?:\/\//.test(url)) {
     return '';
+  }
+  url = url.replace(/^http:\/\//, 'https://');
+  url = url.replace(/([?&]bk_app_id=)(&|$)/, `$1${EMBED_APP_ID}$2`);
+  if (!/[?&]bk_app_id=/.test(url)) {
+    url += `${url.includes('?') ? '&' : '?'}bk_app_id=${EMBED_APP_ID}`;
   }
   return url;
 };
