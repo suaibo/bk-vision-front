@@ -25,6 +25,10 @@
             <bk-button :theme="'primary'" type="submit" @click="searchFile" class="mr10">查询</bk-button>
           </bk-form-item>
         </bk-form>
+        <div class="host-actions">
+          <bk-button size="small" @click="selectAllHosts">全选主机</bk-button>
+          <bk-button size="small" @click="clearSelectedHosts">清空选择</bk-button>
+        </div>
         <bk-table
           style="margin-top: 15px;"
           :data="hostList">
@@ -80,6 +84,16 @@ export default {
     this.searchHosts();
   },
   methods: {
+    selectAllHosts() {
+      this.hostList.forEach((host) => {
+        host.is_selected = true;
+      });
+    },
+    clearSelectedHosts() {
+      this.hostList.forEach((host) => {
+        host.is_selected = false;
+      });
+    },
     async searchHosts() {
       const data = { bk_biz_id: 3 };
       const hostRes = await this.$store.dispatch('example/getHostsData', data, { fromCache: true });
@@ -190,3 +204,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.host-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+</style>

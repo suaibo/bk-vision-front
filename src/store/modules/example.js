@@ -40,7 +40,7 @@ export default {
       return http.get(withQuery('/backup-file', params), config);
     },
     getBackupRecord(context, params, config = {}) {
-      return http.get('/backup-record', config);
+      return http.get(withQuery('/backup-record', params), config);
     },
   },
 };

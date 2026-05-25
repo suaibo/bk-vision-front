@@ -3,7 +3,7 @@
     <div class="dashboard-toolbar">
       <div>
         <div class="dashboard-title">BKVision 数据仪表盘</div>
-        <div class="dashboard-subtitle">API 调用统计与用户备份画像</div>
+        <div class="dashboard-subtitle">API 调用统计、访问日志与用户备份画像</div>
       </div>
       <div class="dashboard-actions">
         <bk-button icon="refresh" @click="refreshDashboard">刷新</bk-button>
