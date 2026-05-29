@@ -18,12 +18,10 @@ const mockTable = require('./api/table');
 const app = new Express();
 
 const PORT = process.env.PORT || 5000;
-const DEFAULT_BACKEND_API_PREFIX = 'https://apps1.ce.bktencent.com/stag--bk-vision-10086/';
-const getBackendTarget = () => (
-  process.env.BK_BACKEND_API_PREFIX
-  || process.env.BK_BACKEND_URL
-  || DEFAULT_BACKEND_API_PREFIX
-);
+const getBackendTarget = () => {
+  const backendTarget = process.env.BK_BACKEND_API_PREFIX || process.env.BK_BACKEND_URL || '';
+  return backendTarget.trim().replace(/^['"]|['"]$/g, '').replace(/\/$/, '');
+};
 const backendApiPaths = [
   '/biz-list',
   '/set-list',
@@ -53,7 +51,7 @@ backendApiPaths.forEach((apiPath) => {
       return;
     }
 
-    const target = `${backendTarget.replace(/\/$/, '')}${req.originalUrl}`;
+    const target = `${backendTarget}${req.originalUrl}`;
     req.pipe(request({
       url: target,
       method: req.method,
@@ -61,6 +59,12 @@ backendApiPaths.forEach((apiPath) => {
         ...req.headers,
         host: undefined,
       },
+    }).on('error', (err) => {
+      res.status(502).json({
+        result: false,
+        message: `Backend proxy request failed: ${err.message}`,
+        data: null,
+      });
     })).pipe(res);
   });
 });
