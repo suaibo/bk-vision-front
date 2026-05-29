@@ -6,7 +6,13 @@
 import http from '@/api';
 import queryString from 'query-string';
 
-const withQuery = (url, params) => `${url}?${queryString.stringify(params)}`;
+const BACKEND_API_PREFIX = (
+  window.BK_BACKEND_API_PREFIX
+  || process.env.BK_BACKEND_API_PREFIX
+  || ''
+).replace(/\/$/, '');
+const withBackend = url => `${BACKEND_API_PREFIX}${url}`;
+const withQuery = (url, params) => `${withBackend(url)}?${queryString.stringify(params)}`;
 
 export default {
   namespaced: true,
@@ -19,7 +25,7 @@ export default {
       return http.get(`/api/table?&${queryString.stringify(params)}`, params, config);
     },
     getBizData(context, params, config = {}) {
-      return http.get('/biz-list', config);
+      return http.get(withBackend('/biz-list'), config);
     },
     getSetData(context, params, config = {}) {
       return http.get(withQuery('/set-list', params), config);
